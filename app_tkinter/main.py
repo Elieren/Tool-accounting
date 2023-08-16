@@ -176,7 +176,7 @@ class Main(tk.Frame):
         elif self.notebook == 1:
             self.tree = ttk.Treeview(self.frame, columns=(
                 'ID', 'worker', 'tool', 'value', 'date'
-                ), height=30, show='headings')
+                ), show='headings')
             self.tree.column('ID', anchor=tk.CENTER, stretch=False)
             self.tree.column('worker', anchor=tk.CENTER)
             self.tree.column('tool', anchor=tk.CENTER)
@@ -200,7 +200,7 @@ class Main(tk.Frame):
         elif self.notebook == 2:
             self.tree = ttk.Treeview(self.frame, columns=(
                 'ID', 'worker', 'tool', 'value', 'date', 'date_delete'
-                ), height=30, show='headings')
+                ), show='headings')
             self.tree.column('ID', anchor=tk.CENTER, stretch=False)
             self.tree.column('worker', anchor=tk.CENTER)
             self.tree.column('tool', anchor=tk.CENTER)
@@ -229,7 +229,7 @@ class Main(tk.Frame):
         elif self.notebook == 3:
             self.tree = ttk.Treeview(self.frame, columns=(
                 'ID', 'worker', 'room', 'date'
-                ), height=30, show='headings')
+                ), show='headings')
             self.tree.column('ID', anchor=tk.CENTER, stretch=False)
             self.tree.column('worker', anchor=tk.CENTER)
             self.tree.column('room', anchor=tk.CENTER)
