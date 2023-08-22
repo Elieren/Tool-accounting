@@ -5,7 +5,7 @@ import os
 
 
 class Main(tk.Frame):
-    def __init__(self, root):
+    def __init__(self, root: tk.Tk) -> None:
         super().__init__(root)
         self.root = root
         self.init_main()
