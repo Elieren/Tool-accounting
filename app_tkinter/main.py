@@ -12,7 +12,7 @@ class Main(tk.Frame):
         self.db = db
         self.view_records()
 
-    def init_main(self):
+    def init_main(self) -> None:
         self.notebook = 0
 
         self.desktop_path = os.path.join(
@@ -145,7 +145,7 @@ class Main(tk.Frame):
 
         self.column()
 
-    def column(self):
+    def column(self) -> None:
         if self.notebook == 0:
             self.tree = ttk.Treeview(self.frame, columns=(
                 'ID', 'main', 'subcategory', 'name', 'value', 'date'
@@ -249,13 +249,13 @@ class Main(tk.Frame):
 
             self.scroll_set()
 
-    def scroll_set(self):
+    def scroll_set(self) -> None:
         self.scroll = tk.Scrollbar(self.frame, command=self.tree.yview)
 
         self.scroll.pack(side=tk.RIGHT, fill=tk.Y, expand=False)
         self.tree.configure(yscrollcommand=self.scroll.set)
 
-    def enable_button(self):
+    def enable_button(self) -> None:
         self.btn_open_dialog.config(state='normal')
         self.btn_edit_dialog.config(state='normal')
         self.btn_delete.config(state='normal')
@@ -263,7 +263,7 @@ class Main(tk.Frame):
         self.btn_refrash.config(state='normal')
         self.btn_excel.config(state='normal')
 
-    def disable_button(self):
+    def disable_button(self) -> None:
         self.btn_open_dialog.config(state='disabled')
         self.btn_edit_dialog.config(state='disabled')
         self.btn_delete.config(state='disabled')
@@ -274,36 +274,40 @@ class Main(tk.Frame):
 # ======================================================== #
 # RECOED
 
-    def record_tool(self, main, subcategory, name, value):
+    def record_tool(self, main: str, subcategory: str,
+                    name: str, value: str) -> None:
         self.db.tool(main, subcategory, name, value)
         self.view_records()
 
-    def record_issuance_of_a_tool(self, worker, tool, value):
+    def record_issuance_of_a_tool(self, worker: str, tool: str,
+                                  value: str) -> None:
         self.db.issuance_of_a_tool(worker, tool, value)
         self.view_records()
 
-    def record_workers(self, worker, room):
+    def record_workers(self, worker: str, room: str) -> None:
         self.db.workers(worker, room)
         self.view_records()
 
 # ======================================================== #
 # UPDATE
 
-    def update_record_tool(self, main, subcategory, name, value):
+    def update_record_tool(self, main: str, subcategory: str,
+                           name: str, value: str) -> None:
         data = {'id': self.tree.set(self.tree.selection()[0], '#1'),
                 'main': main, 'subcategory': subcategory,
                 'name': name, 'value': value}
         requests.post('http://127.0.0.1:5000/update_tool', data=data)
         self.view_records()
 
-    def update_record_issuance_of_a_tool(self, worker, tool, value):
+    def update_record_issuance_of_a_tool(self, worker: str,
+                                         tool: str, value: str) -> None:
         data = {'id': self.tree.set(self.tree.selection()[0], '#1'),
                 'worker': worker, 'tool': tool, 'value': value}
         requests.post(
             'http://127.0.0.1:5000/update_issuance_of_a_tool', data=data)
         self.view_records()
 
-    def update_record_worker(self, worker, room):
+    def update_record_worker(self, worker: str, room: str) -> None:
         data = {'id': self.tree.set(self.tree.selection()[0], '#1'),
                 'worker': worker, 'room': room}
         requests.post(
@@ -313,7 +317,7 @@ class Main(tk.Frame):
 # ======================================================== #
 # VIEW RECORDS
 
-    def view_records(self):
+    def view_records(self) -> None:
         self.tree.destroy()
         self.scroll.destroy()
         self.text_title.destroy()
@@ -354,7 +358,7 @@ class Main(tk.Frame):
 # ======================================================== #
 # DELETE RECORDS
 
-    def delete_records(self):
+    def delete_records(self) -> None:
         for selection_item in self.tree.selection():
             if self.notebook == 0:
                 data = {'id': (self.tree.set(selection_item, '#1'),)}
@@ -375,7 +379,7 @@ class Main(tk.Frame):
 # ======================================================== #
 # SEARCH RECORDS
 
-    def search_records(self, description):
+    def search_records(self, description: str) -> None:
         # description = ('%' + description + '%',)
         row = []
         if self.notebook == 0:
@@ -421,7 +425,7 @@ class Main(tk.Frame):
 # ======================================================== #
 # EXCEL
 
-    def excel_table(self):
+    def excel_table(self) -> None:
 
         html = requests.get('http://127.0.0.1:5000/excel')
         with open(os.path.join(f'{self.desktop_path}/output.xlsx'), 'wb') as f:
@@ -429,41 +433,41 @@ class Main(tk.Frame):
 
 # ======================================================== #
 
-    def open_dialog(self):
+    def open_dialog(self) -> None:
         Child(self.notebook)
 
 # ======================================================== #
 
-    def open_update_dialog(self):
+    def open_update_dialog(self) -> None:
         Update(self.notebook)
 
 # ======================================================== #
 
-    def open_search_dialog(self):
+    def open_search_dialog(self) -> None:
         Search()
 
 # ======================================================== #
 
-    def tool(self):
+    def tool(self) -> None:
         self.notebook = 0
         self.view_records()
 
-    def issuance_of_a_tool(self):
+    def issuance_of_a_tool(self) -> None:
         self.notebook = 1
         self.view_records()
 
-    def extradition(self):
+    def extradition(self) -> None:
         self.notebook = 2
         self.view_records()
 
-    def workers(self):
+    def workers(self) -> None:
         self.notebook = 3
         self.view_records()
 # ======================================================== #
 
 
 class Child(tk.Toplevel):
-    def __init__(self, notebook):
+    def __init__(self, notebook: int) -> None:
         super().__init__(root)
         if notebook == 0:
             self.init_child_tool()
@@ -489,7 +493,7 @@ class Child(tk.Toplevel):
     # ======================================================== #
     # TOOL
 
-    def init_child_tool(self):
+    def init_child_tool(self) -> None:
         self.title('Инструмент')
         self.geometry('400x220+400+300')
         self.resizable(False, False)
@@ -562,7 +566,7 @@ class Child(tk.Toplevel):
     # ======================================================== #
     # ISSUANCE OF A TOOL
 
-    def init_child_issuance_of_a_tool(self):
+    def init_child_issuance_of_a_tool(self) -> None:
 
         self.title('Выдача инст.')
         self.geometry('400x220+400+300')
@@ -607,7 +611,7 @@ class Child(tk.Toplevel):
         self.grab_set()
         self.focus_set()
 
-    def init_child_workers(self):
+    def init_child_workers(self) -> None:
 
         self.title('Работник')
         self.geometry('400x220+400+300')
@@ -643,7 +647,7 @@ class Child(tk.Toplevel):
 
 
 class Update(Child):
-    def __init__(self, notebook):
+    def __init__(self, notebook: int) -> None:
         super().__init__(notebook)
         self.view = app
         self.db = db
@@ -660,7 +664,7 @@ class Update(Child):
     # ======================================================== #
     # TOOL
 
-    def init_edit_tool(self):
+    def init_edit_tool(self) -> None:
         self.title('Редактировать позицию')
         btn_edit = ttk.Button(self, text='Редактировать')
         btn_edit.place(x=205, y=170)
@@ -674,7 +678,7 @@ class Update(Child):
 
         self.btn_ok.destroy()
 
-    def default_data_tool(self):
+    def default_data_tool(self) -> None:
         data = {'id': (
             self.view.tree.set(self.view.tree.selection()[0], '#1'),)}
         html = requests.post(
@@ -689,7 +693,7 @@ class Update(Child):
     # ======================================================== #
     # ISSUANCE OF A TOOL
 
-    def init_edit_issuance_of_a_tool(self):
+    def init_edit_issuance_of_a_tool(self) -> None:
         self.title('Редактировать позицию')
         btn_edit = ttk.Button(self, text='Редактировать')
         btn_edit.place(x=205, y=170)
@@ -700,7 +704,7 @@ class Update(Child):
                                                             self.value.get(),
                                                             ))
 
-    def default_data_issuance_of_a_tool(self):
+    def default_data_issuance_of_a_tool(self) -> None:
         data = {'id': (
             self.view.tree.set(self.view.tree.selection()[0], '#1'),)}
         html = requests.post(
@@ -713,7 +717,7 @@ class Update(Child):
     # ======================================================== #
     # WORKERS
 
-    def init_edit_workers(self):
+    def init_edit_workers(self) -> None:
         self.title('Редактировать позицию')
         btn_edit = ttk.Button(self, text='Редактировать')
         btn_edit.place(x=205, y=170)
@@ -725,7 +729,7 @@ class Update(Child):
 
         self.btn_ok.destroy()
 
-    def default_data_workers(self):
+    def default_data_workers(self) -> None:
         room = [u'53 цех', u'ОТК', u'51 цех', u'54 цех']
         data = {'id': (
             self.view.tree.set(self.view.tree.selection()[0], '#1'),)}
@@ -737,12 +741,12 @@ class Update(Child):
 
 
 class Search(tk.Toplevel):
-    def __init__(self):
+    def __init__(self) -> None:
         super().__init__()
         self.init_search()
         self.view = app
 
-    def init_search(self):
+    def init_search(self) -> None:
         self.title('Поиск')
         self.geometry('300x120+400+300')
         self.resizable(False, False)
@@ -767,20 +771,20 @@ class Search(tk.Toplevel):
 
 
 class DB:
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
-    def tool(self, main, subcategory, name, value):
+    def tool(self, main: str, subcategory: str, name: str, value: str) -> None:
         data = {'main': main, 'subcategory': subcategory,
                 'name': name, 'value': value}
         requests.post('http://127.0.0.1:5000/set_tool', data=data)
 
-    def issuance_of_a_tool(self, worker, tool, value):
+    def issuance_of_a_tool(self, worker: str, tool: str, value: str) -> None:
         data = {'worker': worker, 'tool': tool, 'value': value}
         requests.post('http://127.0.0.1:5000/set_issuance_of_a_tool',
                       data=data)
 
-    def workers(self, worker, room):
+    def workers(self, worker: str, room: str) -> None:
         data = {'worker': worker, 'room': room}
         requests.post('http://127.0.0.1:5000/set_workers',
                       data=data)
